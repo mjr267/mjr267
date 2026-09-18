@@ -29,21 +29,34 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Generate profile panels
+      - name: Install image renderer
+        run: python -m pip install --disable-pip-version-check cairosvg
+
+      - name: Generate profile panel
         env:
           GITHUB_TOKEN: ${{ secrets.PROFILE_STATS_TOKEN }}
           USER_NAME: mjr267
-        run: python profile_stats.py
-
-      - name: Commit generated SVGs
         run: |
-          FILES="profile_dark.svg profile_light.svg"
+          python profile_stats.py
+          python - <<'PY'
+          import cairosvg
+          cairosvg.svg2png(
+              url="profile_dark.svg",
+              write_to="profile_dark.png",
+              output_width=1520,
+              output_height=1712,
+          )
+          PY
+
+      - name: Commit generated profile
+        run: |
+          FILES="profile_dark.svg profile_light.svg profile_dark.png"
           if [ -z "$(git status --porcelain -- $FILES)" ]; then
-            echo "Profile panels are already current."
+            echo "Profile assets are already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add $FILES
-          git commit -m "chore: refresh profile panels"
+          git commit -m "chore: refresh profile assets"
           git push
