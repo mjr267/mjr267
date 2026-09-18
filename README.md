@@ -16,7 +16,5 @@
 
 <br>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mjr267/mjr267/main/profile_dark.svg">
-  <img alt="mjr267 profile: about, GitHub statistics, and tech stack" src="https://raw.githubusercontent.com/mjr267/mjr267/main/profile_light.svg">
-</picture>
+![mjr267 profile: about, GitHub statistics, and tech stack](./profile_dark.svg#gh-dark-mode-only)
+![mjr267 profile: about, GitHub statistics, and tech stack](./profile_light.svg#gh-light-mode-only)
