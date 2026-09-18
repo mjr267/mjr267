@@ -29,79 +29,40 @@ def graphql(query, variables):
 def fmt(value):
     return f"{value:,}"
 
-def get_user():
-    query = """
-    query($login: String!) {
-      user(login: $login) { id }
-    }
-    """
-    return graphql(query, {"login": USERNAME})["user"]
-
 def get_repositories():
-    query = """
+    query = \"\"\"
     query($login: String!, $cursor: String) {
       user(login: $login) {
-        repositories(
-          first: 100
-          after: $cursor
-          ownerAffiliations: [OWNER, COLLABORATOR, ORGANIZATION_MEMBER]
-        ) {
-          nodes {
-            nameWithOwner
-            owner { login }
-            defaultBranchRef { name }
-          }
+        repositories(first: 100, after: $cursor, ownerAffiliations: [OWNER, COLLABORATOR, ORGANIZATION_MEMBER]) {
+          nodes { nameWithOwner owner { login } }
           pageInfo { hasNextPage endCursor }
         }
       }
     }
-    """
+    \"\"\"
     repos, cursor = [], None
     while True:
-        conn = graphql(query, {"login": USERNAME, "cursor": cursor})["user"]["repositories"]
-        repos.extend(conn["nodes"])
-        if not conn["pageInfo"]["hasNextPage"]:
-            return repos
-        cursor = conn["pageInfo"]["endCursor"]
+        conn = graphql(query, {\"login\": USERNAME, \"cursor\": cursor})[\"user\"][\"repositories\"]
+        repos.extend(conn[\"nodes\"])
+        if not conn[\"pageInfo\"][\"hasNextPage\"]: return repos
+        cursor = conn[\"pageInfo\"][\"endCursor\"]
 
-def repo_activity(repo, user_id):
-    if not repo["defaultBranchRef"]:
-        return 0, 0, 0
-    owner, name = repo["nameWithOwner"].split("/", 1)
-    branch = repo["defaultBranchRef"]["name"]
-    query = """
-    query($owner: String!, $name: String!, $branch: String!, $cursor: String, $author: ID!) {
-      repository(owner: $owner, name: $name) {
-        ref(qualifiedName: $branch) {
-          target {
-            ... on Commit {
-              history(first: 100, after: $cursor, author: {id: $author}) {
-                nodes { additions deletions }
-                pageInfo { hasNextPage endCursor }
-              }
-            }
-          }
-        }
-      }
-    }
-    """
-    commits = additions = deletions = 0
-    cursor = None
-    while True:
-        data = graphql(query, {
-            "owner": owner, "name": name, "branch": branch,
-            "cursor": cursor, "author": user_id,
-        })["repository"]
-        if not data or not data["ref"]:
-            return commits, additions, deletions
-        history = data["ref"]["target"]["history"]
-        commits += len(history["nodes"])
-        additions += sum(node["additions"] for node in history["nodes"])
-        deletions += sum(node["deletions"] for node in history["nodes"])
-        if not history["pageInfo"]["hasNextPage"]:
-            return commits, additions, deletions
-        cursor = history["pageInfo"]["endCursor"]
-
+def contribution_stats():
+    years_q = \"\"\"query($login: String!) { user(login: $login) { contributionsCollection { contributionYears } } }\"\"\"
+    years = graphql(years_q, {\"login\": USERNAME})[\"user\"][\"contributionsCollection\"][\"contributionYears\"]
+    totals = {\"owned_commits\": 0, \"other_commits\": 0, \"repos\": set()}
+    q = \"\"\"query($login: String!, $from: DateTime!, $to: DateTime!) { user(login: $login) { contributionsCollection(from: $from, to: $to) { totalCommitContributions commitContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner owner { login } } contributions(first: 100) { nodes { commitCount } } } } } }\"\"\"
+    for year in years:
+        d = graphql(q, {\"login\": USERNAME, \"from\": f\"{year}-01-01T00:00:00Z\", \"to\": f\"{year}-12-31T23:59:59Z\"})[\"user\"][\"contributionsCollection\"]
+        classified = 0
+        for item in d[\"commitContributionsByRepository\"]:
+            repo = item[\"repository\"]
+            count = sum(n[\"commitCount\"] for n in item[\"contributions\"][\"nodes\"])
+            classified += count
+            totals[\"repos\"].add(repo[\"nameWithOwner\"])
+            totals[\"owned_commits\" if repo[\"owner\"][\"login\"].lower() == USERNAME.lower() else \"other_commits\"] += count
+        totals[\"other_commits\"] += max(0, d[\"totalCommitContributions\"] - classified)
+    return totals
 def theme(dark):
     return {
         "bg": "#0d1117" if dark else "#ffffff",
@@ -177,35 +138,18 @@ def generate_profile(stats, dark):
     return head + "".join(lines) + "</svg>"
 
 def main():
-    user = get_user()
     repos = get_repositories()
-
+    cs = contribution_stats()
     stats = {
-        "owned_repos": 0, "other_repos": 0,
-        "owned_commits": 0, "other_commits": 0,
-        "additions": 0, "deletions": 0,
+        \"owned_repos\": sum(r[\"owner\"][\"login\"].lower() == USERNAME.lower() for r in repos),
+        \"other_repos\": len(cs[\"repos\"]),
+        \"owned_commits\": cs[\"owned_commits\"],
+        \"other_commits\": cs[\"other_commits\"],
+        \"additions\": 0, \"deletions\": 0, \"net_loc\": 0,
     }
-
-    for repo in repos:
-        owned = repo["owner"]["login"].lower() == USERNAME.lower()
-        stats["owned_repos" if owned else "other_repos"] += 1
-        commits, additions, deletions = repo_activity(repo, user["id"])
-        stats["owned_commits" if owned else "other_commits"] += commits
-        stats["additions"] += additions
-        stats["deletions"] += deletions
-
-    stats["total_commits"] = stats["owned_commits"] + stats["other_commits"]
-    stats["net_loc"] = stats["additions"] - stats["deletions"]
-
-    outputs = {
-        "profile_dark.svg": generate_profile(stats, True),
-        "profile_light.svg": generate_profile(stats, False),
-    }
-    for filename, content in outputs.items():
-        with open(filename, "w", encoding="utf-8") as handle:
-            handle.write(content)
-
+    stats[\"total_commits\"] = stats[\"owned_commits\"] + stats[\"other_commits\"]
+    for filename, content in {\"profile_dark.svg\": generate_profile(stats, True), \"profile_light.svg\": generate_profile(stats, False)}.items():
+        with open(filename, \"w\", encoding=\"utf-8\") as handle: handle.write(content)
     print(json.dumps(stats, indent=2))
-
 if __name__ == "__main__":
     main()
