@@ -10,4 +10,6 @@
 
 <br>
 
-<img src="./profile_dark.png" alt="mjr267 profile overview" width="100%">
+<div align="center">
+<img src="https://raw.githubusercontent.com/mjr267/mjr267/main/profile_dark.png" alt="mjr267 profile overview" width="100%" style="pointer-events:none">
+</div>
