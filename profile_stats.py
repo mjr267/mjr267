@@ -260,12 +260,18 @@ def render_heatmap(stats, x, y, width, height):
     by_date = {d["date"]: d for d in days}
     start = dt.date.fromisoformat(days[0]["date"]) if days else dt.date.today() - dt.timedelta(days=364)
     start -= dt.timedelta(days=(start.weekday() + 1) % 7)
-    cell = 8
-    gap = 3
     cols = 53
+    rows = 7
+    # Scale the heatmap to use the available panel width instead of leaving
+    # dashboard-sized dead space around GitHub's 53x7 contribution grid.
+    gap = 3
+    cell = min(
+        (width - gap * (cols - 1)) / cols,
+        (height - 58 - gap * (rows - 1)) / rows,
+    )
     parts = [text(x, y, "Contribution activity", "panel-title")]
     gy = y + 34
-    gx = x + 6
+    gx = x
     for c in range(cols):
         week_start = start + dt.timedelta(days=c * 7)
         for r in range(7):
@@ -274,7 +280,7 @@ def render_heatmap(stats, x, y, width, height):
             count = d["contributionCount"] if d else 0
             lvl = heat_level(count, max_count)
             parts.append(
-                f'<rect x="{gx + c * (cell + gap)}" y="{gy + r * (cell + gap)}" width="{cell}" height="{cell}" rx="2" class="heat{lvl}"/>'
+                f'<rect x="{gx + c * (cell + gap):.1f}" y="{gy + r * (cell + gap):.1f}" width="{cell:.1f}" height="{cell:.1f}" rx="2" class="heat{lvl}"/>'
             )
     parts.append(text(x + width, y, f'{fmt(stats["contributions_365"])} in the last 365 days', "small", "end"))
     return "".join(parts)
