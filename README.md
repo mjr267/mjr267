@@ -11,5 +11,8 @@
 <br>
 
 <div align="center">
-<img src="https://raw.githubusercontent.com/mjr267/mjr267/main/profile_dark.png?v=52b6fa83" alt="mjr267 profile overview" width="100%" style="pointer-events:none">
+<picture>
+  <source srcset="https://raw.githubusercontent.com/mjr267/mjr267/4e940c1eba4ac059094f43a72be1347e0cf39749/profile_dark.png">
+  <img src="https://raw.githubusercontent.com/mjr267/mjr267/4e940c1eba4ac059094f43a72be1347e0cf39749/profile_dark.png" alt="mjr267 profile overview" width="100%">
+</picture>
 </div>
