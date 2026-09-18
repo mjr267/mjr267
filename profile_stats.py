@@ -401,8 +401,6 @@ def generate_dashboard(stats, dark):
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{escape(USERNAME)} GitHub analytics dashboard">',
         css,
         f'<rect x="0" y="0" width="{width}" height="{height}" rx="18" class="bg"/>',
-        text(30, 42, USERNAME, "title"),
-        text(30, 66, "GitHub analytics", "subtitle"),
         text(width - 30, 42, f'Updated {stats["updated"]}', "subtitle", "end"),
 
         scorecard(30, 94, 260, 112, "Contributions · all time", fmt(stats["contributions"]), f'{fmt(stats["contributions_365"])} in last 365 days'),
