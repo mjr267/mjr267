@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="180" viewBox="0 0 760 180" role="img" aria-label="mjr267 GitHub statistics"><style>.title{font:700 22px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:#818cf8}.text{font:14px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:#c9d1d9}.muted{font:13px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;fill:#8b949e}</style><rect x="1" y="1" width="758" height="178" rx="12" fill="#0d1117" stroke="#30363d"/><text x="36" y="48" class="title">mjr267@github</text><text x="36" y="78" class="muted">custom profile statistics</text><line x1="36" y1="94" x2="724" y2="94" stroke="#30363d"/><text x="36" y="130" class="text">Stats will populate automatically after the workflow runs on main.</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430" role="img" aria-label="mjr267 GitHub statistics">
+<style>
+  .title { font: 700 22px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
+  .subtitle { font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #8b949e; }
+  .label { font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #c9d1d9; }
+  .value { font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
+</style>
+<rect x="1" y="1" width="758" height="428" rx="12" fill="#0d1117" stroke="#30363d" />
+<text x="36" y="46" class="title">mjr267@github</text>
+<text x="36" y="70" class="subtitle">automatically refreshed from the GitHub API</text>
+<line x1="36" y1="84" x2="724" y2="84" stroke="#30363d" />
+<text x="36" y="108" class="label">Account age</text><text x="724" y="108" text-anchor="end" class="value">4y 6m</text><text x="36" y="138" class="label">Public repositories</text><text x="724" y="138" text-anchor="end" class="value">2</text><text x="36" y="168" class="label">Repositories contributed to</text><text x="724" y="168" text-anchor="end" class="value">0</text><text x="36" y="198" class="label">Stars earned</text><text x="724" y="198" text-anchor="end" class="value">0</text><text x="36" y="228" class="label">Followers</text><text x="724" y="228" text-anchor="end" class="value">0</text><text x="36" y="258" class="label">Commits this year</text><text x="724" y="258" text-anchor="end" class="value">0</text><text x="36" y="288" class="label">Contributions this year</text><text x="724" y="288" text-anchor="end" class="value">0</text><text x="36" y="318" class="label">Pull requests this year</text><text x="724" y="318" text-anchor="end" class="value">0</text><text x="36" y="348" class="label">Issues this year</text><text x="724" y="348" text-anchor="end" class="value">0</text><text x="36" y="378" class="label">PR reviews this year</text><text x="724" y="378" text-anchor="end" class="value">0</text>
+</svg>
