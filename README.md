@@ -14,4 +14,4 @@
 
 <br>
 
-![mjr267 profile overview](profile_dark.svg)
+![mjr267 profile overview](profile_dark.png)
