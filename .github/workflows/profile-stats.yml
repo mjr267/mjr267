@@ -40,17 +40,18 @@ jobs:
           python profile_stats.py
           python - <<'PY'
           import cairosvg
-          cairosvg.svg2png(
-              url="profile_dark.svg",
-              write_to="profile_dark.png",
-              output_width=1520,
-              output_height=1712,
-          )
+          for theme in ("dark", "light"):
+              cairosvg.svg2png(
+                  url=f"profile_{theme}.svg",
+                  write_to=f"profile_{theme}.png",
+                  output_width=1520,
+                  output_height=1712,
+              )
           PY
 
       - name: Commit generated profile
         run: |
-          FILES="profile_dark.svg profile_light.svg profile_dark.png"
+          FILES="profile_dark.svg profile_light.svg profile_dark.png profile_light.png"
           if [ -z "$(git status --porcelain -- $FILES)" ]; then
             echo "Profile assets are already current."
             exit 0
