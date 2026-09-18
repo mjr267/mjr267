@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate light/dark SVG profile statistics from the GitHub GraphQL API."""
+"""Generate light/dark SVG profile statistics from the GitHub GraphQL API.\n\nThe workflow credential must expose the contribution data GitHub attributes to the profile.\n"""
 
 import json
 import os
