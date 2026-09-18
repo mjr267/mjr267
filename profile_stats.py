@@ -363,16 +363,16 @@ def generate_dashboard(stats, dark):
 .bg {{ fill: {t["bg"]}; }}
 .panel {{ fill: {t["panel"]}; stroke: {t["border"]}; stroke-width: 1; }}
 .grid {{ stroke: {t["grid"]}; stroke-width: 1; }}
-.title {{ font: 700 30px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["fg"]}; }}
-.subtitle {{ font: 14px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["muted"]}; }}
-.card-label {{ font: 600 13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["muted"]}; }}
-.card-value {{ font: 700 32px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["fg"]}; }}
-.panel-title {{ font: 650 15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["fg"]}; }}
-.small {{ font: 11px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["muted"]}; }}
-.axis {{ font: 10px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["muted"]}; }}
-.legend {{ font: 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["fg"]}; }}
-.legend-value {{ font: 600 12px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["muted"]}; }}
-.donut-total {{ font: 700 18px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; fill: {t["fg"]}; }}
+.title {{ font-family: Arial, Helvetica, sans-serif; font-size: 30px; font-weight: 700; fill: {t["fg"]}; }}
+.subtitle {{ font-family: Arial, Helvetica, sans-serif; font-size: 14px; font-weight: 400; fill: {t["muted"]}; }}
+.card-label {{ font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: 600; fill: {t["muted"]}; }}
+.card-value {{ font-family: Arial, Helvetica, sans-serif; font-size: 32px; font-weight: 700; fill: {t["fg"]}; }}
+.panel-title {{ font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 600; fill: {t["fg"]}; }}
+.small {{ font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 400; fill: {t["muted"]}; }}
+.axis {{ font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: 400; fill: {t["muted"]}; }}
+.legend {{ font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 400; fill: {t["fg"]}; }}
+.legend-value {{ font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 600; fill: {t["muted"]}; }}
+.donut-total {{ font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; fill: {t["fg"]}; }}
 .bar {{ fill: {t["accent"]}; }}
 .heat0 {{ fill: {t["heat0"]}; }} .heat1 {{ fill: {t["heat1"]}; }} .heat2 {{ fill: {t["heat2"]}; }} .heat3 {{ fill: {t["heat3"]}; }} .heat4 {{ fill: {t["heat4"]}; }}
 .donut0,.dot0,.lang0 {{ stroke: {t["accent"]}; fill: {t["accent"]}; }}
