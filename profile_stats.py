@@ -303,6 +303,9 @@ def render_monthly_bars(stats, x, y, width, height):
         bx = x + 8 + i * (bar_w + bar_gap)
         by = chart_bottom - bh
         parts.append(f'<rect x="{bx:.1f}" y="{by:.1f}" width="{bar_w:.1f}" height="{bh:.1f}" rx="3" class="bar"/>')
+        # Put the value above each bar rather than inside it so short bars remain legible.
+        value_y = max(chart_top + 11, by - 6)
+        parts.append(text(bx + bar_w / 2, value_y, fmt(month["value"]), "bar-value", "middle"))
         parts.append(text(bx + bar_w / 2, chart_bottom + 18, month["label"], "axis", "middle"))
     return "".join(parts)
 
@@ -376,6 +379,7 @@ def generate_dashboard(stats, dark):
 .panel-title {{ font-family: Arial, Helvetica, sans-serif; font-size: 15px; font-weight: 600; fill: {t["fg"]}; }}
 .small {{ font-family: Arial, Helvetica, sans-serif; font-size: 11px; font-weight: 400; fill: {t["muted"]}; }}
 .axis {{ font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: 400; fill: {t["muted"]}; }}
+.bar-value {{ font-family: Arial, Helvetica, sans-serif; font-size: 10px; font-weight: 600; fill: {t["fg"]}; }}
 .legend {{ font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 400; fill: {t["fg"]}; }}
 .legend-value {{ font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: 600; fill: {t["muted"]}; }}
 .donut-total {{ font-family: Arial, Helvetica, sans-serif; font-size: 18px; font-weight: 700; fill: {t["fg"]}; }}
