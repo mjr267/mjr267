@@ -6,8 +6,6 @@
 
 `Analytics Engineer` · `Data Consultant` · `Builder`
 
-<br><br>
-
 </div>
 
 <br>
