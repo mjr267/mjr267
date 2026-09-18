@@ -127,7 +127,7 @@ def svg_shell(width, height, dark, title):
   .strong {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
   .add {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["green"]}; }}
   .del {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["red"]}; }}
-  .dots {{ font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["dot"]}; }}
+  .leader {{ stroke: {t["dot"]}; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 8; }}
 </style>
 <rect x="1" y="1" width="{width-2}" height="{height-2}" rx="14" fill="{t["bg"]}" stroke="{t["border"]}" />
 '''
