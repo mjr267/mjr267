@@ -105,47 +105,64 @@ def default_branch_commits(repo_name):
         cursor = history["pageInfo"]["endCursor"]
 
 
+def contribution_totals():
+    """Mirror GitHub's profile contribution accounting across every contribution year."""
+    years_q = """
+    query($login: String!) {
+      user(login: $login) { contributionsCollection { contributionYears } }
+    }
+    """
+    years = graphql(years_q, {"login": USERNAME})["user"]["contributionsCollection"]["contributionYears"]
+    q = """
+    query($login: String!, $from: DateTime!, $to: DateTime!) {
+      user(login: $login) {
+        contributionsCollection(from: $from, to: $to) {
+          contributionCalendar { totalContributions }
+          totalCommitContributions
+          totalIssueContributions
+          totalPullRequestContributions
+          totalPullRequestReviewContributions
+          totalRepositoryContributions
+          restrictedContributionsCount
+          totalRepositoriesWithContributedCommits
+        }
+      }
+    }
+    """
+    totals = {
+        "contributions": 0, "commits": 0, "issues": 0, "prs": 0,
+        "reviews": 0, "repositories_created": 0, "restricted": 0,
+        "contributed_repos": 0,
+    }
+    for year in years:
+        d = graphql(q, {
+            "login": USERNAME,
+            "from": f"{year}-01-01T00:00:00Z",
+            "to": f"{year}-12-31T23:59:59Z",
+        })["user"]["contributionsCollection"]
+        totals["contributions"] += d["contributionCalendar"]["totalContributions"]
+        totals["commits"] += d["totalCommitContributions"]
+        totals["issues"] += d["totalIssueContributions"]
+        totals["prs"] += d["totalPullRequestContributions"]
+        totals["reviews"] += d["totalPullRequestReviewContributions"]
+        totals["repositories_created"] += d["totalRepositoryContributions"]
+        totals["restricted"] += d["restrictedContributionsCount"]
+        totals["contributed_repos"] = max(totals["contributed_repos"], d["totalRepositoriesWithContributedCommits"])
+    return totals
+
+
 def collect_stats():
     repos = repositories()
-    repo_map = {r["nameWithOwner"]: r for r in repos}
-    commits = {}
-
-    def add(repo, commit):
-        author = (((commit.get("author") or {}).get("user") or {}).get("login") or "").lower()
-        if author == USERNAME.lower():
-            commits.setdefault(commit["oid"], (repo, commit["additions"], commit["deletions"]))
-
-    # Default branches capture merged/direct work.
-    for repo in repos:
-        for commit in default_branch_commits(repo["nameWithOwner"]):
-            add(repo, commit)
-
-    # Authored PRs preserve feature-branch commits even after branch deletion.
-    for pr in authored_prs():
-        repo = pr["repository"]
-        for node in pr["commits"]["nodes"]:
-            add(repo, node["commit"])
-
-    owned = other = additions = deletions = 0
-    contributed = set()
-    for repo, add_count, del_count in commits.values():
-        contributed.add(repo["nameWithOwner"])
-        if repo["owner"]["login"].lower() == USERNAME.lower():
-            owned += 1
-        else:
-            other += 1
-        additions += add_count
-        deletions += del_count
-
+    totals = contribution_totals()
     return {
         "owned_repos": sum(r["owner"]["login"].lower() == USERNAME.lower() for r in repos),
-        "other_repos": sum(r["owner"]["login"].lower() != USERNAME.lower() for r in repos),
-        "owned_commits": owned,
-        "other_commits": other,
-        "total_commits": len(commits),
-        "additions": additions,
-        "deletions": deletions,
-        "net_loc": additions - deletions,
+        "other_repos": totals["contributed_repos"],
+        "contributions": totals["contributions"],
+        "commits": totals["commits"],
+        "prs": totals["prs"],
+        "reviews": totals["reviews"],
+        "issues": totals["issues"],
+        "restricted": totals["restricted"],
     }
 
 
@@ -200,14 +217,14 @@ def generate_profile(stats, dark):
         '<text x="34" y="178" class="label">Building</text><text x="200" y="178" class="text">Data &amp; analytics projects · Self-hosted infrastructure</text>',
         '<text x="200" y="203" class="text">Automation &amp; AI tooling</text>',
         '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
-        stat_row("Repos.Owned", fmt(stats["owned_repos"]), 300, width),
-        stat_row("Repos.Contributed", fmt(stats["other_repos"]), 334, width),
-        stat_row("Commits.Owned", fmt(stats["owned_commits"]), 368, width),
-        stat_row("Commits.Other", fmt(stats["other_commits"]), 402, width),
-        stat_row("Commits.Total", fmt(stats["total_commits"]), 436, width, "strong"),
-        stat_row("Lines.Net", fmt(stats["net_loc"]), 470, width, "strong"),
-        stat_row("Lines.Added", f'{fmt(stats["additions"])} ++', 504, width, "add"),
-        stat_row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 538, width, "del"),
+        stat_row("Contributions.Total", fmt(stats["contributions"]), 300, width, "strong"),
+        stat_row("Commits", fmt(stats["commits"]), 334, width),
+        stat_row("Pull Requests", fmt(stats["prs"]), 368, width),
+        stat_row("Code Reviews", fmt(stats["reviews"]), 402, width),
+        stat_row("Issues", fmt(stats["issues"]), 436, width),
+        stat_row("Repos.Owned", fmt(stats["owned_repos"]), 470, width),
+        stat_row("Repos.Contributed", fmt(stats["other_repos"]), 504, width),
+        stat_row("Private/Restricted", fmt(stats["restricted"]), 538, width),
         '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
         tech_row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width),
         tech_row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width),
