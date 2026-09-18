@@ -138,14 +138,12 @@ def row(label, value, y, width=760, cls="text", label_x=34, value_x=None, dot_x1
         value_x = width - 34
     return (
         f'<text x="{label_x}" y="{y}" class="label">{escape(label)}</text>'
-        f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" '
-        f'stroke="{theme(False)["dot"]}" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8" opacity="0"/>'
         f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" class="leader"/>'
         f'<text x="{value_x}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
     )
 
 def generate_profile(stats, dark):
-    width, height = 760, 820
+    width, height = 760, 856
     head, t = svg_shell(width, height, dark, f"{USERNAME} profile")
     lines = [
         '<text x="34" y="46" class="title">mjr267@github ─────────────────────────────────────────</text>',
@@ -174,6 +172,7 @@ def generate_profile(stats, dark):
         row("Analytics & BI", "Looker, LookML, Tableau, Power BI", 708, width, dot_x1=210, dot_x2=430),
         row("Development", "Python, SQL, Docker, GitHub Actions", 742, width, dot_x1=210, dot_x2=430),
         row("Workflow", "Git, GitHub, CI/CD, Automation", 776, width, dot_x1=210, dot_x2=475),
+        row("Environment", "macOS, Linux, Vercel, Supabase, Cloudflare", 810, width, dot_x1=210, dot_x2=390),
     ]
     return head + "".join(lines) + "</svg>"
 
