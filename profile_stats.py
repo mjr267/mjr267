@@ -133,65 +133,46 @@ def svg_shell(width, height, dark, title):
 '''
     return head, t
 
-def row(label, value, y, width=760, cls="text"):
-    dot_start = 210
-    dot_end = width - 190
+def row(label, value, y, width=760, cls="text", label_x=34, value_x=None, dot_x1=250, dot_x2=520):
+    if value_x is None:
+        value_x = width - 34
     return (
-        f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
-        f'<line x1="{dot_start}" y1="{y-5}" x2="{dot_end}" y2="{y-5}" stroke="currentColor" opacity="0"/>'
-        f'<text x="{dot_start}" y="{y}" class="dots">................................</text>'
-        f'<text x="{width-34}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
+        f'<text x="{label_x}" y="{y}" class="label">{escape(label)}</text>'
+        f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" class="leader"/>'
+        f'<text x="{value_x}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
     )
 
-def generate_about(dark):
-    width, height = 760, 250
-    head, t = svg_shell(width, height, dark, f"{USERNAME} about panel")
+def generate_profile(stats, dark):
+    width, height = 760, 856
+    head, t = svg_shell(width, height, dark, f"{USERNAME} profile")
     lines = [
-        '<text x="34" y="42" class="title">mjr267@github ─────────────────────────────────────────</text>',
-        '<text x="34" y="78" class="label">Role</text>',
-        '<text x="150" y="78" class="text">Analytics Engineer / Data Consultant</text>',
-        '<text x="34" y="112" class="label">Focus</text>',
-        '<text x="150" y="112" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
-        '<text x="150" y="136" class="text">Automation · Developer Tooling</text>',
-        '<text x="34" y="170" class="label">Building</text>',
-        '<text x="150" y="170" class="text">Data & analytics projects · Self-hosted infrastructure</text>',
-        '<text x="150" y="194" class="text">Automation & AI tooling</text>',
-        '<text x="34" y="226" class="muted">terminal-style profile / updated from the same design system as stats</text>',
-    ]
-    return head + "".join(lines) + "</svg>"
+        '<text x="34" y="46" class="title">mjr267@github ─────────────────────────────────────────</text>',
+        '<text x="34" y="88" class="label">Role</text>',
+        '<text x="200" y="88" class="text">Analytics Engineer / Data Consultant</text>',
+        '<text x="34" y="120" class="label">Focus</text>',
+        '<text x="200" y="120" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
+        '<text x="200" y="145" class="text">Automation · Developer Tooling</text>',
+        '<text x="34" y="178" class="label">Building</text>',
+        '<text x="200" y="178" class="text">Data & analytics projects · Self-hosted infrastructure</text>',
+        '<text x="200" y="203" class="text">Automation & AI tooling</text>',
 
-def generate_stack(dark):
-    width, height = 760, 400
-    head, t = svg_shell(width, height, dark, f"{USERNAME} tech stack")
-    sections = [
-        ("Data.Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 84),
-        ("Data.Engineering", "Funnel.io, Matia", 110),
-        ("Analytics.BI", "Looker, LookML, Tableau, Power BI", 160),
-        ("Development", "Python, SQL, Docker, GitHub Actions", 210),
-        ("Workflow", "Git, GitHub, CI/CD, Automation", 260),
-        ("Environment", "macOS, Linux, Vercel, Supabase, Cloudflare", 310),
-    ]
-    lines = [
-        '<text x="34" y="42" class="title">Tech Stack ────────────────────────────────────────────</text>',
-    ]
-    for label, value, y in sections:
-        lines.append(row(label, value, y, width))
-    lines.append('<text x="34" y="366" class="muted">tools grouped by how they are used, not as badge collections</text>')
-    return head + "".join(lines) + "</svg>"
+        '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
+        row("Repos.Owned", fmt(stats["owned_repos"]), 300, width, dot_x1=220, dot_x2=620),
+        row("Repos.Contributed", fmt(stats["other_repos"]), 334, width, dot_x1=220, dot_x2=620),
+        row("Commits.Owned", fmt(stats["owned_commits"]), 368, width, dot_x1=220, dot_x2=620),
+        row("Commits.Other", fmt(stats["other_commits"]), 402, width, dot_x1=220, dot_x2=620),
+        row("Commits.Total", fmt(stats["total_commits"]), 436, width, "strong", dot_x1=220, dot_x2=620),
+        row("Lines.Net", fmt(stats["net_loc"]), 470, width, "strong", dot_x1=220, dot_x2=620),
+        row("Lines.Added", f'{fmt(stats["additions"])} ++', 504, width, "add", dot_x1=220, dot_x2=620),
+        row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 538, width, "del", dot_x1=220, dot_x2=620),
 
-def generate_stats(stats, dark):
-    width, height = 760, 360
-    head, t = svg_shell(width, height, dark, f"{USERNAME} GitHub statistics")
-    lines = [
-        '<text x="34" y="42" class="title">GitHub Stats ─────────────────────────────────────────</text>',
-        row("Repos.Owned", fmt(stats["owned_repos"]), 84, width),
-        row("Repos.Contributed", fmt(stats["other_repos"]), 118, width),
-        row("Commits.Owned", fmt(stats["owned_commits"]), 164, width),
-        row("Commits.Other", fmt(stats["other_commits"]), 198, width),
-        row("Commits.Total", fmt(stats["total_commits"]), 232, width, "strong"),
-        row("Lines.Net", fmt(stats["net_loc"]), 278, width, "strong"),
-        row("Lines.Added", f'{fmt(stats["additions"])} ++', 312, width, "add"),
-        row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 346, width, "del"),
+        '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
+        row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width, dot_x1=210, dot_x2=360),
+        row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width, dot_x1=210, dot_x2=520),
+        row("Analytics & BI", "Looker, LookML, Tableau, Power BI", 708, width, dot_x1=210, dot_x2=430),
+        row("Development", "Python, SQL, Docker, GitHub Actions", 742, width, dot_x1=210, dot_x2=430),
+        row("Workflow", "Git, GitHub, CI/CD, Automation", 776, width, dot_x1=210, dot_x2=475),
+        row("Environment", "macOS, Linux, Vercel, Supabase, Cloudflare", 810, width, dot_x1=210, dot_x2=390),
     ]
     return head + "".join(lines) + "</svg>"
 
@@ -217,12 +198,8 @@ def main():
     stats["net_loc"] = stats["additions"] - stats["deletions"]
 
     outputs = {
-        "dark_mode.svg": generate_stats(stats, True),
-        "light_mode.svg": generate_stats(stats, False),
-        "about_dark.svg": generate_about(True),
-        "about_light.svg": generate_about(False),
-        "stack_dark.svg": generate_stack(True),
-        "stack_light.svg": generate_stack(False),
+        "profile_dark.svg": generate_profile(stats, True),
+        "profile_light.svg": generate_profile(stats, False),
     }
     for filename, content in outputs.items():
         with open(filename, "w", encoding="utf-8") as handle:

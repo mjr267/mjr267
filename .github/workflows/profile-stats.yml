@@ -37,7 +37,7 @@ jobs:
 
       - name: Commit generated SVGs
         run: |
-          FILES="dark_mode.svg light_mode.svg about_dark.svg about_light.svg stack_dark.svg stack_light.svg"
+          FILES="profile_dark.svg profile_light.svg"
           if [ -z "$(git status --porcelain -- $FILES)" ]; then
             echo "Profile panels are already current."
             exit 0
