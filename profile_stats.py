@@ -153,8 +153,8 @@ def generate_profile(stats, dark):
         '<text x="200" y="120" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
         '<text x="200" y="145" class="text">Automation · Developer Tooling</text>',
         '<text x="34" y="178" class="label">Building</text>',
-        '<text x="200" y="178" class="text">Data & analytics projects · Self-hosted infrastructure</text>',
-        '<text x="200" y="203" class="text">Automation & AI tooling</text>',
+        '<text x="200" y="178" class="text">Data &amp; analytics projects · Self-hosted infrastructure</text>',
+        '<text x="200" y="203" class="text">Automation &amp; AI tooling</text>',
 
         '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
         row("Repos.Owned", fmt(stats["owned_repos"]), 300, width, dot_x1=220, dot_x2=620),
