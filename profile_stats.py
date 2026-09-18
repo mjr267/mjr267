@@ -194,7 +194,7 @@ def collect_stats():
             for y, m in month_keys
         ],
         "languages": languages,
-        "updated": today.isoformat(),
+        "updated": now.strftime("%Y-%m-%d %H:%M UTC"),
     }
 
 
@@ -264,13 +264,16 @@ def render_heatmap(stats, x, y, width, height):
     rows = 7
     # Scale the heatmap to use the available panel width instead of leaving
     # dashboard-sized dead space around GitHub's 53x7 contribution grid.
-    gap = 3
-    cell = min(
-        (width - gap * (cols - 1)) / cols,
-        (height - 58 - gap * (rows - 1)) / rows,
-    )
+    # The grid is extremely wide (53x7), so width is the limiting dimension.
+    # Use a tighter gap and nearly the full panel width; then vertically center
+    # the resulting grid in the chart body so it visually fills the panel.
+    gap = 1.5
+    cell = (width - gap * (cols - 1)) / cols
+    grid_height = rows * cell + gap * (rows - 1)
+    body_top = y + 24
+    body_height = height - 24
     parts = [text(x, y, "Contribution activity", "panel-title")]
-    gy = y + 34
+    gy = body_top + max(0, (body_height - grid_height) / 2)
     gx = x
     for c in range(cols):
         week_start = start + dt.timedelta(days=c * 7)
