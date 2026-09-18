@@ -6,11 +6,11 @@
 
 <br>
 
-**Analytics Engineer · Data Consultant · Builder**
+`Analytics Engineer` · `Data Consultant` · `Builder`
 
-<br>
+<br><br>
 
-<img src="https://komarev.com/ghpvc/?username=mjr267&label=Profile%20Views&color=6366f1&style=flat" alt="Profile views" />
+<img src="https://komarev.com/ghpvc/?username=mjr267&label=Profile%20Views&color=6366f1&style=flat-square" alt="Profile views" />
 
 </div>
 
@@ -18,22 +18,22 @@
 
 ## About Me
 
-```yaml
-role: Analytics Engineer / Data Consultant
+```text
+mjr267@github ─────────────────────────────────────────────
 
-interests:
-  - Analytics Engineering
-  - Data Warehousing
-  - Business Intelligence
-  - Data Infrastructure
-  - Automation
-  - Developer Tooling
+Role
+  Analytics Engineer / Data Consultant
 
-currently_building:
-  - Data & analytics projects
-  - Self-hosted infrastructure
-  - Automation & AI tooling
+Interests
+  Analytics Engineering · Data Warehousing · Business Intelligence
+  Data Infrastructure · Automation · Developer Tooling
+
+Currently Building
+  Data & analytics projects · Self-hosted infrastructure
+  Automation & AI tooling
 ```
+
+---
 
 ## GitHub Stats
 
@@ -46,9 +46,13 @@ currently_building:
 
 </div>
 
+---
+
 ## Tech Stack
 
-### Data Engineering
+```text
+Data Engineering ──────────────────────────────────────────
+```
 
 ![dbt](https://img.shields.io/badge/dbt-FF694B?style=flat-square&logo=dbt&logoColor=white)
 ![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?style=flat-square&logo=snowflake&logoColor=white)
@@ -58,14 +62,18 @@ currently_building:
 ![Funnel.io](https://img.shields.io/badge/Funnel.io-FF5C35?style=flat-square&logoColor=white)
 ![Matia](https://img.shields.io/badge/Matia-1A1A2E?style=flat-square&logoColor=white)
 
-### Analytics & BI
+```text
+Analytics & BI ─────────────────────────────────────────────
+```
 
 ![Looker](https://img.shields.io/badge/Looker-4285F4?style=flat-square&logo=looker&logoColor=white)
 ![LookML](https://img.shields.io/badge/LookML-4285F4?style=flat-square&logo=looker&logoColor=white)
 ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=flat-square&logo=tableau&logoColor=white)
 ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=flat-square&logo=powerbi&logoColor=black)
 
-### Development & Infrastructure
+```text
+Development & Infrastructure ───────────────────────────────
+```
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-4479A1?style=flat-square&logo=postgresql&logoColor=white)
