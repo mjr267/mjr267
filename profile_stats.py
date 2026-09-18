@@ -168,23 +168,27 @@ def svg_shell(width, height, dark):
 .strong {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
 .add {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["green"]}; }}
 .del {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["red"]}; }}
-.leader {{ stroke: {t["dot"]}; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 1 8; }}
+.leader {{ stroke: {t["dot"]}; stroke-width: 1; opacity: .65; }}
 </style>
 <rect x="1" y="1" width="{width-2}" height="{height-2}" rx="14" fill="{t["bg"]}" stroke="{t["border"]}" />"""
 
 
-def row(label, value, y, width=760, cls="text", dot_x1=220, dot_x2=620):
+def stat_row(label, value, y, width=760, cls="text"):
+    # Compact terminal ledger: fixed label column, subtle divider, right-aligned value.
     return (
         f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
-        f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" class="leader"/>'
+        f'<line x1="205" y1="{y-18}" x2="205" y2="{y+7}" class="divider"/>'
         f'<text x="{width-34}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
     )
 
 
 def tech_row(label, value, y, width=760):
-    # Every tech row uses the same leader endpoints so spacing is visually relational
-    # to the shared right-aligned value column.
-    return row(label, value, y, width, dot_x1=210, dot_x2=390)
+    # Command-palette style: category tag on the left, value column on the right.
+    return (
+        f'<rect x="34" y="{y-20}" width="154" height="27" rx="5" class="tag"/>'
+        f'<text x="46" y="{y}" class="label">{escape(label)}</text>'
+        f'<text x="{width-34}" y="{y}" text-anchor="end" class="text">{escape(value)}</text>'
+    )
 
 
 def generate_profile(stats, dark):
@@ -197,14 +201,14 @@ def generate_profile(stats, dark):
         '<text x="34" y="178" class="label">Building</text><text x="200" y="178" class="text">Data &amp; analytics projects · Self-hosted infrastructure</text>',
         '<text x="200" y="203" class="text">Automation &amp; AI tooling</text>',
         '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
-        row("Repos.Owned", fmt(stats["owned_repos"]), 300, width),
-        row("Repos.Contributed", fmt(stats["other_repos"]), 334, width),
-        row("Commits.Owned", fmt(stats["owned_commits"]), 368, width),
-        row("Commits.Other", fmt(stats["other_commits"]), 402, width),
-        row("Commits.Total", fmt(stats["total_commits"]), 436, width, "strong"),
-        row("Lines.Net", fmt(stats["net_loc"]), 470, width, "strong"),
-        row("Lines.Added", f'{fmt(stats["additions"])} ++', 504, width, "add"),
-        row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 538, width, "del"),
+        stat_row("Repos.Owned", fmt(stats["owned_repos"]), 300, width),
+        stat_row("Repos.Contributed", fmt(stats["other_repos"]), 334, width),
+        stat_row("Commits.Owned", fmt(stats["owned_commits"]), 368, width),
+        stat_row("Commits.Other", fmt(stats["other_commits"]), 402, width),
+        stat_row("Commits.Total", fmt(stats["total_commits"]), 436, width, "strong"),
+        stat_row("Lines.Net", fmt(stats["net_loc"]), 470, width, "strong"),
+        stat_row("Lines.Added", f'{fmt(stats["additions"])} ++', 504, width, "add"),
+        stat_row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 538, width, "del"),
         '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
         tech_row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width),
         tech_row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width),
