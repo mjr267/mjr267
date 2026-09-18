@@ -146,7 +146,7 @@ def generate_profile(stats, dark):
     width, height = 760, 856
     head, t = svg_shell(width, height, dark, f"{USERNAME} profile")
     lines = [
-        '<text x="34" y="46" class="title">mjr267@github ─────────────────────────────────────────</text>',
+        '<text x="34" y="46" class="title">About Me ─────────────────────────────────────────────</text>',
         '<text x="34" y="88" class="label">Role</text>',
         '<text x="200" y="88" class="text">Analytics Engineer / Data Consultant</text>',
         '<text x="34" y="120" class="label">Focus</text>',
