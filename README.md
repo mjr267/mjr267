@@ -16,8 +16,6 @@
 
 <br>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/mjr267/mjr267/blob/main/profile_dark.svg?raw=1">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/mjr267/mjr267/blob/main/profile_light.svg?raw=1">
-  <img src="https://github.com/mjr267/mjr267/blob/main/profile_light.svg?raw=1" alt="mjr267 profile: about, GitHub statistics, and tech stack" width="760">
-</picture>
+<div align="center">
+  <img src="https://raw.githubusercontent.com/mjr267/mjr267/main/profile_dark.svg?v=2" alt="mjr267 profile: about, GitHub statistics, and tech stack" width="760" />
+</div>
