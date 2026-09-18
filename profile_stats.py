@@ -179,61 +179,75 @@ def svg_shell(width, height, dark):
     t = theme(dark)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{escape(USERNAME)} profile">
 <style>
-.title {{ font: 700 18px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
-.label {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["accent"]}; }}
-.text {{ font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
-.strong {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
-.add {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["green"]}; }}
-.del {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["red"]}; }}
-.leader {{ stroke: {t["dot"]}; stroke-width: 1; opacity: .65; }}
+.kicker {{ font: 700 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 1.8px; fill: {t["accent"]}; }}
+.hero {{ font: 700 30px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
+.section {{ font: 700 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 1.4px; fill: {t["accent"]}; }}
+.stat {{ font: 700 27px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
+.statlabel {{ font: 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["dot"]}; }}
+.label {{ font: 700 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
+.text {{ font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
+.muted {{ font: 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["dot"]}; }}
+.rule {{ stroke: {t["border"]}; stroke-width: 1; }}
 </style>
-<rect x="1" y="1" width="{width-2}" height="{height-2}" rx="14" fill="{t["bg"]}" stroke="{t["border"]}" />"""
+<rect x="1" y="1" width="{width-2}" height="{height-2}" rx="18" fill="{t["bg"]}" stroke="{t["border"]}" />"""
 
 
-def stat_row(label, value, y, width=760, cls="text"):
-    # Compact terminal ledger: fixed label column, subtle divider, right-aligned value.
+def stat_block(value, label, x, y):
     return (
-        f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
-        f'<line x1="205" y1="{y-18}" x2="205" y2="{y+7}" class="divider"/>'
-        f'<text x="{width-34}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
+        f'<text x="{x}" y="{y}" class="stat">{escape(value)}</text>'
+        f'<text x="{x}" y="{y+23}" class="statlabel">{escape(label)}</text>'
     )
 
 
-def tech_row(label, value, y, width=760):
-    # Command-palette style: category tag on the left, value column on the right.
+def stack_line(label, value, y):
     return (
-        f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
-        f'<text x="{width-34}" y="{y}" text-anchor="end" class="text">{escape(value)}</text>'
+        f'<text x="40" y="{y}" class="label">{escape(label)}</text>'
+        f'<text x="218" y="{y}" class="text">{escape(value)}</text>'
     )
 
 
 def generate_profile(stats, dark):
     width, height = 760, 856
     lines = [
-        '<text x="34" y="46" class="title">About Me ─────────────────────────────────────────────</text>',
-        '<text x="34" y="88" class="label">Role</text><text x="200" y="88" class="text">Analytics Engineer / Data Consultant</text>',
-        '<text x="34" y="120" class="label">Focus</text><text x="200" y="120" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
-        '<text x="200" y="145" class="text">Automation · Developer Tooling</text>',
-        '<text x="34" y="178" class="label">Building</text><text x="200" y="178" class="text">Data &amp; analytics projects · Self-hosted infrastructure</text>',
-        '<text x="200" y="203" class="text">Automation &amp; AI tooling</text>',
-        '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
-        stat_row("Contributions.Total", fmt(stats["contributions"]), 300, width, "strong"),
-        stat_row("Commits", fmt(stats["commits"]), 334, width),
-        stat_row("Pull Requests", fmt(stats["prs"]), 368, width),
-        stat_row("Code Reviews", fmt(stats["reviews"]), 402, width),
-        stat_row("Issues", fmt(stats["issues"]), 436, width),
-        stat_row("Repos.Owned", fmt(stats["owned_repos"]), 470, width),
-        stat_row("Repos.Contributed", fmt(stats["other_repos"]), 504, width),
-        '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
-        tech_row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width),
-        tech_row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width),
-        tech_row("Analytics & BI", "Looker, LookML, Tableau, Power BI", 708, width),
-        tech_row("Development", "Python, SQL, Docker, GitHub Actions", 742, width),
-        tech_row("Workflow", "Git, GitHub, CI/CD, Automation", 776, width),
-        tech_row("Environment", "macOS, Linux, Vercel, Supabase, Cloudflare", 810, width),
+        # Identity: intentionally editorial rather than a faux terminal/dashboard.
+        '<text x="40" y="48" class="kicker">MJR267 / PROFILE</text>',
+        '<text x="40" y="92" class="hero">analytics engineering</text>',
+        '<text x="40" y="126" class="hero">+ things I build.</text>',
+        '<text x="40" y="162" class="muted">Data systems, BI, automation, infrastructure, and developer tooling.</text>',
+        '<line x1="40" y1="194" x2="720" y2="194" class="rule"/>',
+
+        # GitHub activity: large numbers first; labels are deliberately quiet.
+        '<text x="40" y="229" class="section">GITHUB / ALL-TIME ACTIVITY</text>',
+        stat_block(fmt(stats["contributions"]), "CONTRIBUTIONS", 40, 278),
+        stat_block(fmt(stats["commits"]), "COMMITS", 280, 278),
+        stat_block(fmt(stats["prs"]), "PULL REQUESTS", 520, 278),
+        stat_block(fmt(stats["reviews"]), "CODE REVIEWS", 40, 352),
+        stat_block(fmt(stats["issues"]), "ISSUES", 280, 352),
+        stat_block(fmt(stats["owned_repos"]), "REPOS OWNED", 520, 352),
+        '<line x1="40" y1="400" x2="720" y2="400" class="rule"/>',
+
+        # Work profile: short, human-readable statements instead of key/value filler.
+        '<text x="40" y="435" class="section">WHAT I WORK ON</text>',
+        '<text x="40" y="474" class="label">Analytics systems</text>',
+        '<text x="218" y="474" class="text">warehouses · semantic layers · reporting</text>',
+        '<text x="40" y="507" class="label">Engineering</text>',
+        '<text x="218" y="507" class="text">pipelines · automation · internal tools</text>',
+        '<text x="40" y="540" class="label">Infrastructure</text>',
+        '<text x="218" y="540" class="text">cloud services · CI/CD · self-hosted systems</text>',
+        '<line x1="40" y1="578" x2="720" y2="578" class="rule"/>',
+
+        # Stack: no pills, badges, boxes, or category backgrounds.
+        '<text x="40" y="613" class="section">TOOLS I ACTUALLY USE</text>',
+        stack_line("DATA", "dbt · Snowflake · BigQuery · Airbyte · Fivetran", 652),
+        stack_line("BI", "Looker · LookML · Tableau · Power BI", 685),
+        stack_line("BUILD", "Python · SQL · Docker · GitHub Actions", 718),
+        stack_line("PLATFORM", "Vercel · Supabase · Cloudflare · Linux", 751),
+        stack_line("WORKFLOW", "Git · GitHub · CI/CD · automation", 784),
+
+        '<text x="40" y="824" class="muted">SAN DIEGO, CA</text>',
+        '<text x="720" y="824" text-anchor="end" class="muted">github.com/mjr267</text>',
     ]
     return svg_shell(width, height, dark) + "".join(lines) + "</svg>"
-
 
 def main():
     stats = collect_stats()
