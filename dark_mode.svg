@@ -1,13 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520" role="img" aria-label="mjr267 GitHub statistics">
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="440" viewBox="0 0 760 440" role="img" aria-label="mjr267 GitHub statistics">
 <style>
   .title { font: 700 22px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
   .subtitle { font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #8b949e; }
-  .label { font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #c9d1d9; }
-  .value { font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
+  .section { font: 700 15px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #c9d1d9; }
+  .label { font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #8b949e; }
+  .value { font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
+  .strong { font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #818cf8; }
+  .add { font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #3fb950; }
+  .del { font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #f85149; }
 </style>
-<rect x="1" y="1" width="758" height="518" rx="12" fill="#0d1117" stroke="#30363d" />
-<text x="36" y="46" class="title">mjr267@github</text>
-<text x="36" y="70" class="subtitle">automatically refreshed from the GitHub API</text>
-<line x1="36" y1="84" x2="724" y2="84" stroke="#30363d" />
-<text x="36" y="108" class="label">Account age</text><text x="724" y="108" text-anchor="end" class="value">4y 6m</text><text x="36" y="138" class="label">Public repositories</text><text x="724" y="138" text-anchor="end" class="value">2</text><text x="36" y="168" class="label">Repositories contributed to</text><text x="724" y="168" text-anchor="end" class="value">63</text><text x="36" y="198" class="label">Stars earned</text><text x="724" y="198" text-anchor="end" class="value">0</text><text x="36" y="228" class="label">Followers</text><text x="724" y="228" text-anchor="end" class="value">0</text><text x="36" y="258" class="label">Commits this year</text><text x="724" y="258" text-anchor="end" class="value">1,303</text><text x="36" y="288" class="label">Contributions this year</text><text x="724" y="288" text-anchor="end" class="value">1,824</text><text x="36" y="318" class="label">Pull requests this year</text><text x="724" y="318" text-anchor="end" class="value">280</text><text x="36" y="348" class="label">Issues this year</text><text x="724" y="348" text-anchor="end" class="value">42</text><text x="36" y="378" class="label">PR reviews this year</text><text x="724" y="378" text-anchor="end" class="value">189</text><text x="36" y="408" class="label">Owned-repo activity</text><text x="724" y="408" text-anchor="end" class="value">741</text><text x="36" y="438" class="label">Other-org/repo activity</text><text x="724" y="438" text-anchor="end" class="value">1,073</text><text x="36" y="468" class="label">Restricted / unattributed</text><text x="724" y="468" text-anchor="end" class="value">0</text>
+<rect x="1" y="1" width="758" height="438" rx="12" fill="#0d1117" stroke="#30363d" />
+<text x="36" y="44" class="title">GitHub Stats</text>
+<text x="36" y="68" class="subtitle">owned + accessible organization/collaborator repositories</text>
+<line x1="36" y1="82" x2="724" y2="82" stroke="#30363d" />
+<text x="36" y="104" class="section">Repositories</text><text x="52" y="134" class="label">Owned</text><text x="724" y="134" text-anchor="end" class="value">11</text><text x="52" y="164" class="label">Other / Contributed</text><text x="724" y="164" text-anchor="end" class="value">18</text><text x="36" y="194" class="section">Commits</text><text x="52" y="224" class="label">Owned Repos</text><text x="724" y="224" text-anchor="end" class="value">24</text><text x="52" y="254" class="label">Other Repos</text><text x="724" y="254" text-anchor="end" class="value">33</text><text x="52" y="284" class="label">Total</text><text x="724" y="284" text-anchor="end" class="strong">57</text><text x="36" y="314" class="section">Lines of Code</text><text x="52" y="344" class="label">Net</text><text x="724" y="344" text-anchor="end" class="strong">6,080</text><text x="52" y="374" class="label">Added</text><text x="724" y="374" text-anchor="end" class="add">7,060 ++</text><text x="52" y="404" class="label">Deleted</text><text x="724" y="404" text-anchor="end" class="del">980 --</text>
 </svg>
