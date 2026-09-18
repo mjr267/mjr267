@@ -265,16 +265,17 @@ def render_heatmap(stats, x, y, width, height):
     rows = 7
     # Scale the heatmap to use the available panel width instead of leaving
     # dashboard-sized dead space around GitHub's 53x7 contribution grid.
-    # The grid is extremely wide (53x7), so width is the limiting dimension.
-    # Use a tighter gap and nearly the full panel width; then vertically center
-    # the resulting grid in the chart body so it visually fills the panel.
-    gap = 1.5
-    cell = (width - gap * (cols - 1)) / cols
-    grid_height = rows * cell + gap * (rows - 1)
-    body_top = y + 24
-    body_height = height - 24
+    # A 53x7 calendar is much wider than this dashboard panel. Square cells
+    # therefore leave a large amount of unused vertical space. Size the cell
+    # width and height independently so the heatmap fills the chart body.
+    gap_x = 1.5
+    gap_y = 3
+    body_top = y + 30
+    body_height = height - 34
+    cell_w = (width - gap_x * (cols - 1)) / cols
+    cell_h = (body_height - gap_y * (rows - 1)) / rows
     parts = [text(x, y, "Contribution activity", "panel-title")]
-    gy = body_top + max(0, (body_height - grid_height) / 2)
+    gy = body_top
     gx = x
     for c in range(cols):
         week_start = start + dt.timedelta(days=c * 7)
@@ -284,7 +285,7 @@ def render_heatmap(stats, x, y, width, height):
             count = d["contributionCount"] if d else 0
             lvl = heat_level(count, max_count)
             parts.append(
-                f'<rect x="{gx + c * (cell + gap):.1f}" y="{gy + r * (cell + gap):.1f}" width="{cell:.1f}" height="{cell:.1f}" rx="2" class="heat{lvl}"/>'
+                f'<rect x="{gx + c * (cell_w + gap_x):.1f}" y="{gy + r * (cell_h + gap_y):.1f}" width="{cell_w:.1f}" height="{cell_h:.1f}" rx="2" class="heat{lvl}"/>'
             )
     parts.append(text(x + width, y, f'{fmt(stats["contributions_365"])} in the last 365 days', "small", "end"))
     return "".join(parts)
