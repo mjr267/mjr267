@@ -133,46 +133,47 @@ def svg_shell(width, height, dark, title):
 '''
     return head, t
 
-def row(label, value, y, width=760, cls="text"):
-    dot_start = 210
-    dot_end = width - 190
+def row(label, value, y, width=760, cls="text", label_x=34, value_x=None, dot_x1=250, dot_x2=520):
+    if value_x is None:
+        value_x = width - 34
     return (
-        f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
-        f'<line x1="{dot_start}" y1="{y-5}" x2="{dot_end}" y2="{y-5}" stroke="currentColor" opacity="0"/>'
-        f'<text x="{dot_start}" y="{y}" class="dots">................................</text>'
-        f'<text x="{width-34}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
+        f'<text x="{label_x}" y="{y}" class="label">{escape(label)}</text>'
+        f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" '
+        f'stroke="{theme(False)["dot"]}" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 8" opacity="0"/>'
+        f'<line x1="{dot_x1}" y1="{y-5}" x2="{dot_x2}" y2="{y-5}" class="leader"/>'
+        f'<text x="{value_x}" y="{y}" text-anchor="end" class="{cls}">{escape(value)}</text>'
     )
 
 def generate_profile(stats, dark):
-    width, height = 760, 780
+    width, height = 760, 820
     head, t = svg_shell(width, height, dark, f"{USERNAME} profile")
     lines = [
-        '<text x="34" y="42" class="title">mjr267@github ─────────────────────────────────────────</text>',
-        '<text x="34" y="78" class="label">Role</text>',
-        '<text x="210" y="78" class="text">Analytics Engineer / Data Consultant</text>',
-        '<text x="34" y="108" class="label">Focus</text>',
-        '<text x="210" y="108" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
-        '<text x="210" y="132" class="text">Automation · Developer Tooling</text>',
-        '<text x="34" y="162" class="label">Building</text>',
-        '<text x="210" y="162" class="text">Data & analytics projects · Self-hosted infrastructure</text>',
-        '<text x="210" y="186" class="text">Automation & AI tooling</text>',
-        '<text x="34" y="232" class="title">GitHub Stats ─────────────────────────────────────────</text>',
-        row("Repos.Owned", fmt(stats["owned_repos"]), 270, width),
-        row("Repos.Contributed", fmt(stats["other_repos"]), 300, width),
-        row("Commits.Owned", fmt(stats["owned_commits"]), 330, width),
-        row("Commits.Other", fmt(stats["other_commits"]), 360, width),
-        row("Commits.Total", fmt(stats["total_commits"]), 390, width, "strong"),
-        row("Lines.Net", fmt(stats["net_loc"]), 420, width, "strong"),
-        row("Lines.Added", f'{fmt(stats["additions"])} ++', 450, width, "add"),
-        row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 480, width, "del"),
-        '<text x="34" y="526" class="title">Tech Stack ───────────────────────────────────────────</text>',
-        row("Data.Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 564, width),
-        row("Data.Tools", "Funnel.io, Matia", 594, width),
-        row("Analytics.BI", "Looker, LookML, Tableau, Power BI", 624, width),
-        row("Development", "Python, SQL, Docker, GitHub Actions", 654, width),
-        row("Workflow", "Git, GitHub, CI/CD, Automation", 684, width),
-        row("Environment", "macOS, Linux, Vercel, Supabase, Cloudflare", 714, width),
-        '<text x="34" y="756" class="muted">about · activity · tools / one unified profile panel</text>',
+        '<text x="34" y="46" class="title">mjr267@github ─────────────────────────────────────────</text>',
+        '<text x="34" y="88" class="label">Role</text>',
+        '<text x="200" y="88" class="text">Analytics Engineer / Data Consultant</text>',
+        '<text x="34" y="120" class="label">Focus</text>',
+        '<text x="200" y="120" class="text">Analytics Engineering · BI · Data Infrastructure</text>',
+        '<text x="200" y="145" class="text">Automation · Developer Tooling</text>',
+        '<text x="34" y="178" class="label">Building</text>',
+        '<text x="200" y="178" class="text">Data & analytics projects · Self-hosted infrastructure</text>',
+        '<text x="200" y="203" class="text">Automation & AI tooling</text>',
+
+        '<text x="34" y="258" class="title">GitHub Stats ─────────────────────────────────────────</text>',
+        row("Repos.Owned", fmt(stats["owned_repos"]), 300, width, dot_x1=220, dot_x2=620),
+        row("Repos.Contributed", fmt(stats["other_repos"]), 334, width, dot_x1=220, dot_x2=620),
+        row("Commits.Owned", fmt(stats["owned_commits"]), 368, width, dot_x1=220, dot_x2=620),
+        row("Commits.Other", fmt(stats["other_commits"]), 402, width, dot_x1=220, dot_x2=620),
+        row("Commits.Total", fmt(stats["total_commits"]), 436, width, "strong", dot_x1=220, dot_x2=620),
+        row("Lines.Net", fmt(stats["net_loc"]), 470, width, "strong", dot_x1=220, dot_x2=620),
+        row("Lines.Added", f'{fmt(stats["additions"])} ++', 504, width, "add", dot_x1=220, dot_x2=620),
+        row("Lines.Deleted", f'{fmt(stats["deletions"])} --', 538, width, "del", dot_x1=220, dot_x2=620),
+
+        '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
+        row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width, dot_x1=210, dot_x2=360),
+        row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width, dot_x1=210, dot_x2=520),
+        row("Analytics & BI", "Looker, LookML, Tableau, Power BI", 708, width, dot_x1=210, dot_x2=430),
+        row("Development", "Python, SQL, Docker, GitHub Actions", 742, width, dot_x1=210, dot_x2=430),
+        row("Workflow", "Git, GitHub, CI/CD, Automation", 776, width, dot_x1=210, dot_x2=475),
     ]
     return head + "".join(lines) + "</svg>"
 
