@@ -136,7 +136,8 @@ def collect_stats():
             d["totalRepositoriesWithContributedCommits"],
         )
 
-    today = dt.datetime.now(dt.timezone.utc).date()
+    now = dt.datetime.now(dt.timezone.utc)
+    today = now.date()
     start_date = today - dt.timedelta(days=364)
     current = contribution_slice(
         f"{start_date.isoformat()}T00:00:00Z",
