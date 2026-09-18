@@ -38,6 +38,23 @@ query($login: String!) {
       totalIssueContributions
       totalPullRequestContributions
       totalPullRequestReviewContributions
+      restrictedContributionsCount
+      commitContributionsByRepository(maxRepositories: 100) {
+        repository { owner { login } }
+        contributions { totalCount }
+      }
+      issueContributionsByRepository(maxRepositories: 100) {
+        repository { owner { login } }
+        contributions { totalCount }
+      }
+      pullRequestContributionsByRepository(maxRepositories: 100) {
+        repository { owner { login } }
+        contributions { totalCount }
+      }
+      pullRequestReviewContributionsByRepository(maxRepositories: 100) {
+        repository { owner { login } }
+        contributions { totalCount }
+      }
     }
   }
 }
@@ -81,6 +98,9 @@ def generate_svg(stats, dark):
         ("Pull requests this year", fmt(stats["prs_year"])),
         ("Issues this year", fmt(stats["issues_year"])),
         ("PR reviews this year", fmt(stats["reviews_year"])),
+        ("Owned-repo activity", fmt(stats["owned_activity"])),
+        ("Other-org/repo activity", fmt(stats["other_activity"])),
+        ("Restricted / unattributed", fmt(stats["restricted_activity"])),
     ]
 
     row_svg = []
@@ -92,14 +112,14 @@ def generate_svg(stats, dark):
         )
         y += 30
 
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="760" height="430" viewBox="0 0 760 430" role="img" aria-label="{USERNAME} GitHub statistics">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520" role="img" aria-label="{USERNAME} GitHub statistics">
 <style>
   .title {{ font: 700 22px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {accent}; }}
   .subtitle {{ font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {muted}; }}
   .label {{ font: 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {fg}; }}
   .value {{ font: 700 14px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {accent}; }}
 </style>
-<rect x="1" y="1" width="758" height="428" rx="12" fill="{bg}" stroke="{border}" />
+<rect x="1" y="1" width="758" height="518" rx="12" fill="{bg}" stroke="{border}" />
 <text x="36" y="46" class="title">{USERNAME}@github</text>
 <text x="36" y="70" class="subtitle">automatically refreshed from the GitHub API</text>
 <line x1="36" y1="84" x2="724" y2="84" stroke="{border}" />
@@ -115,6 +135,21 @@ def main():
     months = (now.month - created.month) % 12
 
     contributions = user["contributionsCollection"]
+    grouped = (
+        contributions["commitContributionsByRepository"]
+        + contributions["issueContributionsByRepository"]
+        + contributions["pullRequestContributionsByRepository"]
+        + contributions["pullRequestReviewContributionsByRepository"]
+    )
+    owned_activity = sum(
+        item["contributions"]["totalCount"] for item in grouped
+        if item["repository"]["owner"]["login"].lower() == USERNAME.lower()
+    )
+    other_activity = sum(
+        item["contributions"]["totalCount"] for item in grouped
+        if item["repository"]["owner"]["login"].lower() != USERNAME.lower()
+    )
+
     stats = {
         "account_age": f"{years}y {months}m",
         "repos": user["repositories"]["totalCount"],
@@ -126,6 +161,9 @@ def main():
         "prs_year": contributions["totalPullRequestContributions"],
         "issues_year": contributions["totalIssueContributions"],
         "reviews_year": contributions["totalPullRequestReviewContributions"],
+        "owned_activity": owned_activity,
+        "other_activity": other_activity,
+        "restricted_activity": contributions["restrictedContributionsCount"],
     }
 
     for filename, dark in (("dark_mode.svg", True), ("light_mode.svg", False)):
