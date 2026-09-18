@@ -31,7 +31,7 @@ jobs:
 
       - name: Generate profile stats
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROFILE_STATS_TOKEN }}
           USER_NAME: mjr267
         run: python profile_stats.py
 
