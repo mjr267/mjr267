@@ -49,11 +49,27 @@ jobs:
               )
           PY
 
+      - name: Refresh README cache key
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          path = Path("README.md")
+          content = path.read_text()
+          version = "${{ github.run_id }}"
+          content = re.sub(
+              r'(github_stats_(?:dark|light)\.png)\?[^"\\s>]+',
+              rf'\1?v={version}',
+              content,
+          )
+          path.write_text(content)
+          PY
+
       - name: Commit generated dashboard
         run: |
-          FILES="github_stats_dark.svg github_stats_light.svg github_stats_dark.png github_stats_light.png"
+          FILES="github_stats_dark.svg github_stats_light.svg github_stats_dark.png github_stats_light.png README.md"
           if [ -z "$(git status --porcelain -- $FILES)" ]; then
-            echo "Dashboard assets are already current."
+            echo "Dashboard assets and README are already current."
             exit 0
           fi
           git config user.name "github-actions[bot]"
