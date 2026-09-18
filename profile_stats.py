@@ -224,7 +224,6 @@ def generate_profile(stats, dark):
         stat_row("Issues", fmt(stats["issues"]), 436, width),
         stat_row("Repos.Owned", fmt(stats["owned_repos"]), 470, width),
         stat_row("Repos.Contributed", fmt(stats["other_repos"]), 504, width),
-        stat_row("Private/Restricted", fmt(stats["restricted"]), 538, width),
         '<text x="34" y="598" class="title">Tech Stack ───────────────────────────────────────────</text>',
         tech_row("Data Engineering", "dbt, Snowflake, BigQuery, Airbyte, Fivetran", 640, width),
         tech_row("ETL & Reverse ETL", "Funnel.io, Matia", 674, width),
