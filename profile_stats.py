@@ -179,14 +179,14 @@ def svg_shell(width, height, dark):
     t = theme(dark)
     return f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}" role="img" aria-label="{escape(USERNAME)} profile">
 <style>
-.kicker {{ font: 700 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 1.8px; fill: {t["accent"]}; }}
-.hero {{ font: 700 30px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
-.section {{ font: 700 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; letter-spacing: 1.4px; fill: {t["accent"]}; }}
-.stat {{ font: 700 27px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
-.statlabel {{ font: 11px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["dot"]}; }}
-.label {{ font: 700 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["fg"]}; }}
-.text {{ font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["value"]}; }}
-.muted {{ font: 12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: {t["dot"]}; }}
+.kicker {{ font: 600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 1.2px; fill: {t["accent"]}; }}
+.hero {{ font: 650 30px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: {t["fg"]}; }}
+.section {{ font: 600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 1.1px; fill: {t["accent"]}; }}
+.stat {{ font: 650 28px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: {t["fg"]}; }}
+.statlabel {{ font: 500 10px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .5px; fill: {t["dot"]}; }}
+.label {{ font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: {t["fg"]}; }}
+.text {{ font: 13px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: {t["value"]}; }}
+.muted {{ font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: {t["dot"]}; }}
 .rule {{ stroke: {t["border"]}; stroke-width: 1; }}
 </style>
 <rect x="1" y="1" width="{width-2}" height="{height-2}" rx="18" fill="{t["bg"]}" stroke="{t["border"]}" />"""
