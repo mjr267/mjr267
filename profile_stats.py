@@ -169,9 +169,9 @@ def collect_stats():
 def theme(dark):
     return {
         "bg": "#0d1117" if dark else "#ffffff", "fg": "#e6edf3" if dark else "#24292f",
-        "accent": "#f59e0b" if dark else "#bc6b00", "value": "#9cdcfe" if dark else "#0550ae",
-        "green": "#3fb950" if dark else "#1a7f37", "red": "#f85149" if dark else "#cf222e",
-        "border": "#30363d" if dark else "#d0d7de", "dot": "#6e7681" if dark else "#8c959f",
+        "accent": "#c9a66b" if dark else "#795f35", "value": "#c9d1d9" if dark else "#424a53",
+        "green": "#8aa07c" if dark else "#536b49", "red": "#b98278" if dark else "#8c5148",
+        "border": "#262b31" if dark else "#dedbd5", "dot": "#7d8288" if dark else "#77736d",
     }
 
 
@@ -210,24 +210,24 @@ def generate_profile(stats, dark):
     width, height = 760, 856
     lines = [
         # Identity: intentionally editorial rather than a faux terminal/dashboard.
-        '<text x="40" y="48" class="kicker">MJR267 / PROFILE</text>',
+        '<text x="40" y="48" class="kicker">mjr267</text>',
         '<text x="40" y="92" class="hero">analytics engineering</text>',
         '<text x="40" y="126" class="hero">+ things I build.</text>',
         '<text x="40" y="162" class="muted">Data systems, BI, automation, infrastructure, and developer tooling.</text>',
         '<line x1="40" y1="194" x2="720" y2="194" class="rule"/>',
 
         # GitHub activity: large numbers first; labels are deliberately quiet.
-        '<text x="40" y="229" class="section">GITHUB / ALL-TIME ACTIVITY</text>',
-        stat_block(fmt(stats["contributions"]), "CONTRIBUTIONS", 40, 278),
-        stat_block(fmt(stats["commits"]), "COMMITS", 280, 278),
-        stat_block(fmt(stats["prs"]), "PULL REQUESTS", 520, 278),
-        stat_block(fmt(stats["reviews"]), "CODE REVIEWS", 40, 352),
-        stat_block(fmt(stats["issues"]), "ISSUES", 280, 352),
-        stat_block(fmt(stats["owned_repos"]), "REPOS OWNED", 520, 352),
+        '<text x="40" y="229" class="section">GitHub activity</text>',
+        stat_block(fmt(stats["contributions"]), "contributions", 40, 278),
+        stat_block(fmt(stats["commits"]), "commits", 280, 278),
+        stat_block(fmt(stats["prs"]), "pull requests", 520, 278),
+        stat_block(fmt(stats["reviews"]), "code reviews", 40, 352),
+        stat_block(fmt(stats["issues"]), "issues", 280, 352),
+        stat_block(fmt(stats["owned_repos"]), "repos owned", 520, 352),
         '<line x1="40" y1="400" x2="720" y2="400" class="rule"/>',
 
         # Work profile: short, human-readable statements instead of key/value filler.
-        '<text x="40" y="435" class="section">WHAT I WORK ON</text>',
+        '<text x="40" y="435" class="section">What I work on</text>',
         '<text x="40" y="474" class="label">Analytics systems</text>',
         '<text x="218" y="474" class="text">warehouses · semantic layers · reporting</text>',
         '<text x="40" y="507" class="label">Engineering</text>',
@@ -237,14 +237,14 @@ def generate_profile(stats, dark):
         '<line x1="40" y1="578" x2="720" y2="578" class="rule"/>',
 
         # Stack: no pills, badges, boxes, or category backgrounds.
-        '<text x="40" y="613" class="section">TOOLS I ACTUALLY USE</text>',
-        stack_line("DATA", "dbt · Snowflake · BigQuery · Airbyte · Fivetran", 652),
+        '<text x="40" y="613" class="section">Tools I use</text>',
+        stack_line("Data", "dbt · Snowflake · BigQuery · Airbyte · Fivetran", 652),
         stack_line("BI", "Looker · LookML · Tableau · Power BI", 685),
-        stack_line("BUILD", "Python · SQL · Docker · GitHub Actions", 718),
-        stack_line("PLATFORM", "Vercel · Supabase · Cloudflare · Linux", 751),
-        stack_line("WORKFLOW", "Git · GitHub · CI/CD · automation", 784),
+        stack_line("Build", "Python · SQL · Docker · GitHub Actions", 718),
+        stack_line("Platform", "Vercel · Supabase · Cloudflare · Linux", 751),
+        stack_line("Workflow", "Git · GitHub · CI/CD · automation", 784),
 
-        '<text x="40" y="824" class="muted">SAN DIEGO, CA</text>',
+        '<text x="40" y="824" class="muted">San Diego, CA</text>',
         '<text x="720" y="824" text-anchor="end" class="muted">github.com/mjr267</text>',
     ]
     return svg_shell(width, height, dark) + "".join(lines) + "</svg>"
