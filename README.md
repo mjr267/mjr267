@@ -14,4 +14,4 @@
 
 <br>
 
-![mjr267 profile overview](profile_dark.png)
+<img src="./profile_dark.png" alt="mjr267 profile overview" width="100%">
