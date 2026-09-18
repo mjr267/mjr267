@@ -185,8 +185,7 @@ def stat_row(label, value, y, width=760, cls="text"):
 def tech_row(label, value, y, width=760):
     # Command-palette style: category tag on the left, value column on the right.
     return (
-        f'<rect x="34" y="{y-20}" width="154" height="27" rx="5" class="tag"/>'
-        f'<text x="46" y="{y}" class="label">{escape(label)}</text>'
+        f'<text x="34" y="{y}" class="label">{escape(label)}</text>'
         f'<text x="{width-34}" y="{y}" text-anchor="end" class="text">{escape(value)}</text>'
     )
 
