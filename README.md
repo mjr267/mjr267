@@ -16,5 +16,8 @@
 
 <br>
 
-![mjr267 profile: about, GitHub statistics, and tech stack](./profile_dark.svg#gh-dark-mode-only)
-![mjr267 profile: about, GitHub statistics, and tech stack](./profile_light.svg#gh-light-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./profile_dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./profile_light.svg">
+  <img src="./profile_light.svg" alt="mjr267 profile: about, GitHub statistics, and tech stack" width="760">
+</picture>
