@@ -21,8 +21,10 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -37,6 +39,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PROFILE_STATS_TOKEN }}
           USER_NAME: mjr267
         run: |
+          mkdir -p generated/github-profile/stats
           python profile_stats.py
           python - <<'PY'
           import cairosvg
@@ -48,33 +51,25 @@ jobs:
                   output_height=1520,
               )
           PY
+          mv github_stats_dark.svg github_stats_light.svg github_stats_dark.png github_stats_light.png generated/github-profile/stats/
 
-      - name: Refresh README cache key
+      - name: Publish generated assets to outputs
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          path = Path("README.md")
-          content = path.read_text()
-          version = "${{ github.run_id }}"
-          content = re.sub(
-              r'(github_stats_(?:dark|light)\.png)\?[^"\\s>]+',
-              rf'\1?v={version}',
-              content,
-          )
-          path.write_text(content)
-          PY
-
-      - name: Commit generated dashboard
-        run: |
-          FILES="github_stats_dark.svg github_stats_light.svg github_stats_dark.png github_stats_light.png README.md"
-          if [ -z "$(git status --porcelain -- $FILES)" ]; then
-            echo "Dashboard assets and README are already current."
-            exit 0
-          fi
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add $FILES
+          # Use a separate worktree so that the source branch stays untouched.
+          git fetch origin outputs
+          git worktree add --detach output-worktree origin/outputs
+          mkdir -p output-worktree/github-profile/stats
+          cp generated/github-profile/stats/* output-worktree/github-profile/stats/
+          cd output-worktree
+          git add -- github-profile/stats/
+          if git diff --cached --quiet; then
+            echo "Generated assets are unchanged."
+            exit 0
+          fi
           git commit -m "chore: refresh GitHub stats dashboard"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          git push origin HEAD:outputs

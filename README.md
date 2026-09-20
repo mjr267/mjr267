@@ -5,7 +5,7 @@
 </div>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./github_stats_dark.png?v=35479254408">
-  <source media="(prefers-color-scheme: light)" srcset="./github_stats_light.png?v=35479254408">
-  <img src="./github_stats_dark.png?v=35479254408" alt="mjr267 GitHub analytics dashboard" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/mjr267/mjr267/outputs/github-profile/stats/github_stats_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/mjr267/mjr267/outputs/github-profile/stats/github_stats_light.png">
+  <img src="https://raw.githubusercontent.com/mjr267/mjr267/outputs/github-profile/stats/github_stats_dark.png" alt="mjr267 GitHub analytics dashboard" width="100%">
 </picture>
